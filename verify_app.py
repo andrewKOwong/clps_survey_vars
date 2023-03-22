@@ -3,6 +3,7 @@ import json
 import argparse
 from enum import Enum
 
+DATA_FILE = "survey_vars_mini.json"
 
 class Heading(Enum):
     """Enum for heading strs for display."""
@@ -24,12 +25,8 @@ class Heading(Enum):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("survey_vars", type=str, default="{}")
-    args = parser.parse_args()
-    with open(args.survey_vars) as f:
+    with open(DATA_FILE) as f:
         data = json.load(f)
-
     # Convenience variable for Heading enum
     H = Heading
     # data is a list of dicts, each dict representing a survey variable
