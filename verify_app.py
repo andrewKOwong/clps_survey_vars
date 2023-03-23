@@ -1,10 +1,10 @@
 import streamlit as st
 import json
-import argparse
 from enum import Enum
 from string import Template
 
 DATA_FILE = "survey_vars_mini.json"
+
 
 class Heading(Enum):
     """Enum for heading strs for display."""
@@ -28,6 +28,15 @@ class Heading(Enum):
 # Convenience variable for Heading enum
 H = Heading
 
+
+@st.cache_data
+def load_data(data_file: str):
+    with open(data_file) as f:
+        data = json.load(f)
+    return data
+
+
+@st.cache_data
 def generate_variable_index(data: list):
     out = {}
     for i, q in enumerate(data):
@@ -39,8 +48,7 @@ def generate_variable_index(data: list):
 right_aligned = Template("<div style='text-align: right'>$text</div>")
 
 if __name__ == "__main__":
-    with open(DATA_FILE) as f:
-        data = json.load(f)
+    data = load_data(DATA_FILE)
 
     var_index = generate_variable_index(data)
 
@@ -49,8 +57,8 @@ if __name__ == "__main__":
         st.write("Introduction and description.")
         selected_var = st.selectbox(
             'Choose a variable.',
-             var_index.keys(),
-             index=1
+            var_index.keys(),
+            index=1
              )
 
     # The current question to be displayed
