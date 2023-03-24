@@ -4,7 +4,7 @@ from enum import Enum
 from string import Template
 
 # Hardcoded location for survey vairables json file
-DATA_FILE = "survey_vars_mini.json"
+DATA_FILE = "survey_vars.json"
 # Initial data index to display
 START_INDEX = 0
 BROWSER_TITLE = "CLPS Codebook Browser"
