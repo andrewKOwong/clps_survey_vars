@@ -178,10 +178,13 @@ if __name__ == "__main__":
             bot = st.columns(widths, gap='small')
             bot[0].markdown(f"**{H.total.value}**")
             for i, h in zip(range(2, 5), headings_right):
+                text = f"{q[H.total.name][h.name]}"
+                # Commas for freq/weighted freq display
+                if h in headings_freq:
+                    text = f"{int(q[H.total.name][h.name]):,}"
                 bot[i].markdown(
                     right_aligned.substitute(
-                        text=f"{q[H.total.name][h.name]}"),
-                    unsafe_allow_html=True)
+                        text=text), unsafe_allow_html=True)
 
             # Disclaimer
             st.write("\n\n")
