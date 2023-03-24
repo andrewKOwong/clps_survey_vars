@@ -120,6 +120,10 @@ if __name__ == "__main__":
             on_change=on_select_box,
             key='select_box'
             )
+        # Download option for the data file
+        st.write('\n\n')
+        with open(DATA_FILE) as f:
+            st.download_button("Download JSON", f, DATA_FILE)
 
     # Populate the data fields.
     # Container is unnecessary, but makes the code more readable by indent.
