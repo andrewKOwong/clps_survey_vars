@@ -53,20 +53,21 @@ class IncomingState(Enum):
 
 
 def on_select_box():
-    st.session_state.incoming_state = IncomingState.SELECT_BOX
-    if st.session_state.current_var_index < \
-            st.session_state.max_var_index:
-        st.session_state.current_var_index += 1
+    st.session_state.incoming_state = IncomingState.SELECT_BOX.value
+    print(selected_var)
+    st.session_state.current_var_index = \
+        var_index[st.session_state.select_box]
 
 
 def on_prev_button():
-    st.session_state.incoming_state = IncomingState.PREV_BUTTON
+    st.session_state.incoming_state = IncomingState.PREV_BUTTON.value
     if st.session_state.current_var_index > 0:
         st.session_state.current_var_index -= 1
 
 
 def on_next_button():
-    st.session_state.incoming_state = IncomingState.NEXT_BUTTON
+    """Callback for next button click."""
+    st.session_state.incoming_state = IncomingState.NEXT_BUTTON.value
     if st.session_state.current_var_index < \
             st.session_state.max_var_index:
         st.session_state.current_var_index += 1
@@ -88,20 +89,10 @@ if __name__ == "__main__":
     if 'max_var_index' not in st.session_state:
         st.session_state.max_var_index = len(var_index) - 1
     if 'incoming_state' not in st.session_state:
-        st.session_state.incoming_state = IncomingState.INIT
+        st.session_state.incoming_state = IncomingState.INIT.value
 
-    print("starting index:", st.session_state.current_var_index)
-
-    with st.sidebar:
-        st.header("Canadian Legal Problems Survey Variable Verification")
-        st.write("Introduction and description.")
-        selected_var = st.selectbox(
-            'Choose a variable.',
-            var_index.keys(),
-            index=START_INDEX,
-            on_change=on_select_box,
-            key='select_box'
-            )
+    st.session_state.select_box = \
+        data[st.session_state.current_var_index][H.variable_name.name]
 
     # Placeholder container to load after getting state
     q_container = st.container()
@@ -111,22 +102,24 @@ if __name__ == "__main__":
     _, mid, _ = st.columns([1, 1, 1])
     prev_col, next_col = mid.columns(2)
 
-    # Based on the source of the last change, update the current_var_index.
-    match st.session_state.incoming_state.value:
-        case IncomingState.SELECT_BOX.value:
-            st.session_state.current_var_index = var_index[selected_var]
-        case IncomingState.INIT.value:
-            st.session_state.current_var_index = START_INDEX
     # Draw prev/next buttons, unless at beginning or end of list
     if st.session_state.current_var_index > 0:
         prev = prev_col.button("Previous", on_click=on_prev_button)
     if st.session_state.current_var_index < st.session_state.max_var_index:
         next = next_col.button("Next", on_click=on_next_button)
-    # Populate the select box with the current variable
-    # st.session_state.select_box = \
-    #     data[st.session_state.current_var_index][H.variable_name.name]
 
     print("current_var_index:", st.session_state.current_var_index)
+
+    # Set up the sidebar
+    with st.sidebar:
+        st.header("Canadian Legal Problems Survey Variable Verification")
+        st.write("Introduction and description.")
+        selected_var = st.selectbox(
+            'Choose a variable.',
+            var_index.keys(),
+            on_change=on_select_box,
+            key='select_box'
+            )
 
     # Populate the data fields
     with q_container:
