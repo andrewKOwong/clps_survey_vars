@@ -148,6 +148,8 @@ if __name__ == "__main__":
                         text = f"{int(q[h.name][i]):,}"
                     if h in headings_right:
                         text = right_aligned.substitute(text=text)
+                    # Escape $ to prevent LaTeX trigger
+                    text = text.replace('$', r'\$')
                     bot[j].markdown(text, unsafe_allow_html=True)
             # Total
             st.write("\n")
