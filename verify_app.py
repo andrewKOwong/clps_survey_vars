@@ -188,10 +188,12 @@ if __name__ == "__main__":
 
             # Disclaimer
             st.write("\n\n")
-            st.write("*Note: totals are extracted from the codebook,"
-                     " and may not "
-                     "add up due to rounding (off by up to 1 for weighted "
-                     "frequency and up to 0.2% for percent).*")
+            st.write(
+                "*Note: "
+                " Totals are extracted from the codebook,"
+                " and may not "
+                "add up due to rounding (off by up to 1 for weighted "
+                "frequency and up to 0.2% for percent).*")
 
     # Centred buttons appearing below the main question data
     st.write("\n\n")
