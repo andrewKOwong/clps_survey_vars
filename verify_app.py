@@ -44,30 +44,18 @@ def generate_variable_index(data: list) -> dict:
     return out
 
 
-class IncomingState(Enum):
-    """Values for keeping track of the last variable change source."""
-    INIT = 0
-    SELECT_BOX = 1
-    NEXT_BUTTON = 2
-    PREV_BUTTON = 3
-
-
 def on_select_box():
-    st.session_state.incoming_state = IncomingState.SELECT_BOX.value
-    print(selected_var)
     st.session_state.current_var_index = \
         var_index[st.session_state.select_box]
 
 
 def on_prev_button():
-    st.session_state.incoming_state = IncomingState.PREV_BUTTON.value
     if st.session_state.current_var_index > 0:
         st.session_state.current_var_index -= 1
 
 
 def on_next_button():
     """Callback for next button click."""
-    st.session_state.incoming_state = IncomingState.NEXT_BUTTON.value
     if st.session_state.current_var_index < \
             st.session_state.max_var_index:
         st.session_state.current_var_index += 1
@@ -88,8 +76,6 @@ if __name__ == "__main__":
         st.session_state.current_var_index = START_INDEX
     if 'max_var_index' not in st.session_state:
         st.session_state.max_var_index = len(var_index) - 1
-    if 'incoming_state' not in st.session_state:
-        st.session_state.incoming_state = IncomingState.INIT.value
 
     st.session_state.select_box = \
         data[st.session_state.current_var_index][H.variable_name.name]
