@@ -7,7 +7,24 @@ from string import Template
 DATA_FILE = "survey_vars_mini.json"
 # Initial data index to display
 START_INDEX = 0
-# Template for right aligned text
+BROWSER_TITLE = "CLPS Codebook Browser"
+TITLE = "Canadian Legal Problems Survey Codebook Browser"
+INTRO = (
+    "The [Canadian Legal Problems Survey (CLPS)]"
+    "(https://www.justice.gc.ca/eng/rp-pr/jr/survey-enquete.html)"
+    " is a national survey of Canadians' experiences with the justice system,"
+    " most recently conducted by Statisics Canada in 2021."
+    " Data from the survey is provided via a [Public Use Microdata File]"
+    "(https://www150.statcan.gc.ca/n1/pub/35-25-0002/352500022022001-eng.htm)."
+    " The provided data included a codebook containing information about"
+    " survey variables in PDF format."
+    " This app displays data extracted from the PDF codebook,"
+    " allowing browsing or verification of the data."
+    " Code for this app and the data extraction script can be found"
+    " [here](https://github.com/andrewKOwong/clps_survey_vars)."
+)
+
+# HTML template for right-aligned text
 right_aligned = Template("<div style='text-align: right'>$text</div>")
 
 
@@ -75,6 +92,7 @@ def on_next_button():
 
 
 if __name__ == "__main__":
+    st.set_page_config(page_title=BROWSER_TITLE)
     # Load the data
     data = load_data(DATA_FILE)
     # Generate the variable index, a dict matching
@@ -94,8 +112,8 @@ if __name__ == "__main__":
         data[st.session_state.current_var_index][H.variable_name.name]
     # Set up the sidebar, with a select box for variable selection
     with st.sidebar:
-        st.header("Canadian Legal Problems Survey Variable Verification")
-        st.write("Introduction and description.")
+        st.header(TITLE)
+        st.write(INTRO)
         selected_var = st.selectbox(
             'Choose a variable.',
             var_index.keys(),
