@@ -46,7 +46,7 @@ def debug_shim(soup: BeautifulSoup, out: str = 'debug.html') -> None:
 
 
 # Use this to save the lists of data during extraction for debugging.
-def debug_listed_data(data: list, out: str = 'debug.txt') -> None:
+def debug_listed_data(data: list, out: str) -> None:
     with open(out, 'w') as f:
         for e in data:
             f.write(str(e))
@@ -267,7 +267,7 @@ units = group_elements(elements)
 
 if debug_mode:
     debug_units_fp = 'debug_units.txt'
-    debug_listed_data(units[1], debug_elements_fp)
+    debug_listed_data(units, debug_units_fp)
     logging.debug(f"Units written to {debug_units_fp}.")
 
 
