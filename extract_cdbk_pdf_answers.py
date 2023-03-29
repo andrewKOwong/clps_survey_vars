@@ -422,8 +422,9 @@ def get_question_name(unit: list) -> str:
     Returns:
         The question name field as a string.
     """
-    return get_middle_section(unit, Field.question_name.value,
-                                    Field.concept.value)
+    return get_middle_section(unit,
+                              Field.question_name.value,
+                              Field.concept.value)
 
 
 def get_concept(unit: list) -> str:
@@ -435,8 +436,9 @@ def get_concept(unit: list) -> str:
     Returns:
         The concept field as a string.
     """
-    return get_middle_section(unit, Field.concept.value,
-                                    Field.question_text.value)
+    return get_middle_section(unit,
+                              Field.concept.value,
+                              Field.question_text.value)
 
 
 def get_question_text(unit: list) -> str:
@@ -448,8 +450,9 @@ def get_question_text(unit: list) -> str:
     Returns:
         The question text field as a string.
     """
-    return get_middle_section(unit, Field.question_text.value,
-                                    Field.universe.value)
+    return get_middle_section(unit,
+                              Field.question_text.value,
+                              Field.universe.value)
 
 
 def get_universe(unit: list) -> str:
@@ -461,8 +464,9 @@ def get_universe(unit: list) -> str:
     Returns:
         The universe field as a string.
     """
-    return get_middle_section(unit, Field.universe.value,
-                                    Field.note.value)
+    return get_middle_section(unit,
+                              Field.universe.value,
+                              Field.note.value)
 
 
 def get_note(unit: list) -> str:
@@ -474,8 +478,9 @@ def get_note(unit: list) -> str:
     Returns:
         The note field as a string.
     """
-    return get_middle_section(unit, Field.note.value,
-                                    Field.source.value)
+    return get_middle_section(unit,
+                              Field.note.value,
+                              Field.source.value)
 
 
 def get_source(unit: list) -> str:
@@ -487,8 +492,9 @@ def get_source(unit: list) -> str:
     Returns:
         The source field as a string.
     """
-    return get_middle_section(unit, Field.source.value,
-                                    Field.answer_categories.value)
+    return get_middle_section(unit,
+                              Field.source.value,
+                              Field.answer_categories.value)
 
 
 class PageBreak:
