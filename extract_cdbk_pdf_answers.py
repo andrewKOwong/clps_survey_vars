@@ -3,6 +3,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup, Tag
 from dataclasses import dataclass, field
 from enum import Enum
+from copy import deepcopy
 import re
 import json
 import logging
@@ -413,6 +414,99 @@ def get_middle_section(
     return out
 
 
+def get_middle_section_broad(
+        unit: list,
+        top: str,
+        bottom: str,
+        top_tol: int = 10,
+        bottom_buffer: int = 10) -> str:
+    """Get data from question through source fields.
+
+    This is a func for getting individual data fields that sit in the same
+    vertical column between the question name field down to the source field.
+
+    It works by supplying the desired heading as top, and the next heading
+    directly below as bottom. It then uses these headings to find the data
+    fields that sit between vertically.
+
+    Potentially this function could be refactored, as the vertical order
+    of the metadata fields is constant, and thus shouldn't need to be supplied.
+
+    Args:
+        unit: a list of Elements corresponding to a questionnaire question.
+        top: the actual heading value e.g. "Question Name:"
+             of the desired data field.
+        bottom: the heading value of the next data field below the desired
+            field.
+        top_tol: tolerance for finding top element.
+        bottom_buffer: buffer above the bottom elements for finding elements
+            between the top and bottom elements.
+
+    Returns:
+        The data as a string.
+    """
+    # Approximate position where text is expected to be,
+    # with buffer in case of minor irregularities
+    TEXT_LEFT_POS = 178
+    TEXT_LEFT_BUFFER = 5
+    TEXT_RIGHT_POS = 567
+    # Left/right boundaries
+    left = TEXT_LEFT_POS - TEXT_LEFT_BUFFER
+    right = TEXT_RIGHT_POS
+    # Get elements that are to the right of the top element
+    # but above the bottom element, within tolerance/buffers.
+    # Remember: top is a smaller number than bottom!
+    t = get_elem_by_text(unit, top).top - top_tol  # top boundary
+    b = get_elem_by_text(unit, bottom).top - bottom_buffer  # bottom boundary
+    out = []
+    for e in unit:
+        if (t < e.top < b) and (left < e.left < right):
+            out.append(e)
+
+    # Break lines into multiple elements if they span multiple lines
+    out_copy = deepcopy(out)
+    for e in out_copy:
+        if e.text.count('\n') > 0:
+            # Remove the original element
+            out.remove(e)
+            # Add new elements for each line, adding buffer space for each
+            # new line.
+            for i, line in enumerate(e.text.split('\n')):
+                out.append(Element(
+                    elem_type=e.elem_type,
+                    text=line.strip(),
+                    top=e.top + (i * 10),
+                    left=e.left,
+                    width=e.width,
+                    height=e.height,
+                    ))
+
+    # A priori, can't be certain that lines broken into multiple elements
+    # will have the exact same top position.
+    # Thus, reset the top position of any elements that aren't aligned to the
+    # left of the field to the closest element that aligned to the left.
+    left_aligned_left_limit = TEXT_LEFT_POS - TEXT_LEFT_BUFFER
+    left_aligned_right_limit = TEXT_LEFT_POS + TEXT_LEFT_BUFFER
+    out_copy = deepcopy(out)
+    for i, e in enumerate(out_copy):
+        if not (left_aligned_left_limit < e.left < left_aligned_right_limit):
+            # Find closest element that aligned to the left
+            closest = min(out_copy, key=lambda x: abs(x.top - e.top))
+            # Reset top position in original out list
+            out[i].top = closest.top
+    # Defensively re-sort so ascending by top, then by left
+    out = sorted(out, key=lambda x: (x.top, x.left))
+    # Get the text strings
+    out = [e.text for e in out]
+    # Join with spaces, replace ligatures etc., then remove
+    # internal newlines and repeated whitespace, then rejoin.
+    out = ' '.join(out)
+    out = replace_characters(out, FAULTY_CHARACTER_MAPPER)
+    out = ' '.join(split_and_strip(out, sep='\n'))
+
+    return out
+
+
 def get_question_name(unit: list) -> str:
     """Get question name data.
 
@@ -450,9 +544,9 @@ def get_question_text(unit: list) -> str:
     Returns:
         The question text field as a string.
     """
-    return get_middle_section(unit,
-                              Field.question_text.value,
-                              Field.universe.value)
+    return get_middle_section_broad(unit,
+                                    Field.question_text.value,
+                                    Field.universe.value)
 
 
 def get_universe(unit: list) -> str:
