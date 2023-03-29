@@ -297,6 +297,20 @@ def replace_characters(s: str, mapper: dict) -> str:
     return s
 
 
+def replace_hyphenated_words(s: str) -> str:
+    """Replace multiline hyphenated words from a string.
+
+    Some words in the original text fields are hyphenated as they are broken
+    at the end of line. The result after extraction and processing takes on
+    the form: "wordpart1- wordpart2". This function runs a regex to find
+    these words and remove the internal hyphen and space.
+    """
+    # Finds '- ' between two lowercase letters. Must be lower case
+    # to avoid a few cases where the question concept has e.g. "you- Bought".
+    # Lower case requirement disappears if only running on question text.
+    return re.sub(r"(?<=[a-z])- (?=[a-z])", "", s)
+
+
 def get_elem_by_text(unit: list, text: str) -> Element:
     """Search a list of Elements for the first element with provided text."""
     for e in unit:
@@ -410,6 +424,8 @@ def get_middle_section(
     out = ' '.join(out)
     out = replace_characters(out, FAULTY_CHARACTER_MAPPER)
     out = ' '.join(split_and_strip(out, sep='\n'))
+    # Remove multiline hyphenations
+    out = replace_hyphenated_words(out)
 
     return out
 
@@ -509,6 +525,8 @@ def get_middle_section_broad(
     out = ' '.join(out)
     out = replace_characters(out, FAULTY_CHARACTER_MAPPER)
     out = ' '.join(split_and_strip(out, sep='\n'))
+    # Remove multiline hyphenations
+    out = replace_hyphenated_words(out)
 
     return out
 
