@@ -420,17 +420,19 @@ def get_middle_section_broad(
         bottom: str,
         top_tol: int = 10,
         bottom_buffer: int = 10) -> str:
-    """Get data from question through source fields.
+    """Alternate version of get_middle_section.
 
-    This is a func for getting individual data fields that sit in the same
-    vertical column between the question name field down to the source field.
+    Questions ASTP20B,C,D,F,G have their question text field extracted
+    into broken into left and right parts. For example, ASTP20B ends up having
+    elements:
+    'Only report the actions you took in Canada.\n      the dispute'
+    '- Contacted the other party involved in'
 
-    It works by supplying the desired heading as top, and the next heading
-    directly below as bottom. It then uses these headings to find the data
-    fields that sit between vertically.
+    This is caused by the visual break from ' - ' in the middle of the line.
 
-    Potentially this function could be refactored, as the vertical order
-    of the metadata fields is constant, and thus shouldn't need to be supplied.
+    The function is a modified version on `get_middle_section` that accounts
+    for these issues. It should probably only be used for the question text
+    field.
 
     Args:
         unit: a list of Elements corresponding to a questionnaire question.
@@ -449,6 +451,9 @@ def get_middle_section_broad(
     # with buffer in case of minor irregularities
     TEXT_LEFT_POS = 178
     TEXT_LEFT_BUFFER = 5
+    # This position is somewhere in the middle-right of
+    # the page, but good enough since we're using left boundaries to
+    # find the elements.
     TEXT_RIGHT_POS = 567
     # Left/right boundaries
     left = TEXT_LEFT_POS - TEXT_LEFT_BUFFER
@@ -456,6 +461,7 @@ def get_middle_section_broad(
     # Get elements that are to the right of the top element
     # but above the bottom element, within tolerance/buffers.
     # Remember: top is a smaller number than bottom!
+    # Also within the left right boundaries
     t = get_elem_by_text(unit, top).top - top_tol  # top boundary
     b = get_elem_by_text(unit, bottom).top - bottom_buffer  # bottom boundary
     out = []
@@ -481,7 +487,7 @@ def get_middle_section_broad(
                     height=e.height,
                     ))
 
-    # A priori, can't be certain that lines broken into multiple elements
+    # A priori, can't be certain that lines broken left-right
     # will have the exact same top position.
     # Thus, reset the top position of any elements that aren't aligned to the
     # left of the field to the closest element that aligned to the left.
