@@ -360,13 +360,13 @@ def get_position(unit: list) -> str:
             .text.split(':')[1].strip())
 
 
-def get_question_thru_source(
+def get_middle_section(
         unit: list,
         top: str,
         bottom: str,
         top_tol: int = 10,
         bottom_buffer: int = 10) -> str:
-    """Get data from question through source fields.
+    """Helper funct for getting data from question through source fields.
 
     This is a func for getting individual data fields that sit in the same
     vertical column between the question name field down to the source field.
@@ -374,9 +374,6 @@ def get_question_thru_source(
     It works by supplying the desired heading as top, and the next heading
     directly below as bottom. It then uses these headings to find the data
     fields that sit between vertically.
-
-    Potentially this function could be refactored, as the vertical order
-    of the metadata fields is constant, and thus shouldn't need to be supplied.
 
     Args:
         unit: a list of Elements corresponding to a questionnaire question.
@@ -414,6 +411,84 @@ def get_question_thru_source(
     out = ' '.join(split_and_strip(out, sep='\n'))
 
     return out
+
+
+def get_question_name(unit: list) -> str:
+    """Get question name data.
+
+    Args:
+        unit: a list of Elements corresponding to a questionnaire question.
+
+    Returns:
+        The question name field as a string.
+    """
+    return get_middle_section(unit, Field.question_name.value,
+                                    Field.concept.value)
+
+
+def get_concept(unit: list) -> str:
+    """Get concept data.
+
+    Args:
+        unit: a list of Elements corresponding to a questionnaire question.
+
+    Returns:
+        The concept field as a string.
+    """
+    return get_middle_section(unit, Field.concept.value,
+                                    Field.question_text.value)
+
+
+def get_question_text(unit: list) -> str:
+    """Get question text data.
+
+    Args:
+        unit: a list of Elements corresponding to a questionnaire question.
+
+    Returns:
+        The question text field as a string.
+    """
+    return get_middle_section(unit, Field.question_text.value,
+                                    Field.universe.value)
+
+
+def get_universe(unit: list) -> str:
+    """Get universe data.
+
+    Args:
+        unit: a list of Elements corresponding to a questionnaire question.
+
+    Returns:
+        The universe field as a string.
+    """
+    return get_middle_section(unit, Field.universe.value,
+                                    Field.note.value)
+
+
+def get_note(unit: list) -> str:
+    """Get question note data.
+
+    Args:
+        unit: a list of Elements corresponding to a questionnaire question.
+
+    Returns:
+        The note field as a string.
+    """
+    return get_middle_section(unit, Field.note.value,
+                                    Field.source.value)
+
+
+def get_source(unit: list) -> str:
+    """Get source data.
+
+    Args:
+        unit: a list of Elements corresponding to a questionnaire question.
+
+    Returns:
+        The source field as a string.
+    """
+    return get_middle_section(unit, Field.source.value,
+                                    Field.answer_categories.value)
 
 
 class PageBreak:
@@ -734,22 +809,16 @@ for unit, q in zip(units, questions):
         q[Field.variable_name.name] = get_variable_name(unit)
         q[Field.length.name] = get_length(unit)
         q[Field.position.name] = get_position(unit)
-        q[Field.question_name.name] = get_question_thru_source(
-            unit, Field.question_name.value, Field.concept.value)
-        q[Field.concept.name] = get_question_thru_source(
-            unit, Field.concept.value, Field.question_text.value)
-        q[Field.question_text.name] = get_question_thru_source(
-            unit, Field.question_text.value, Field.universe.value)
-        q[Field.universe.name] = get_question_thru_source(
-            unit, Field.universe.value, Field.note.value)
-        q[Field.note.name] = get_question_thru_source(
-            unit, Field.note.value, Field.source.value)
+        q[Field.question_name.name] = get_question_name(unit)
+        q[Field.concept.name] = get_concept(unit)
+        q[Field.question_text.name] = get_question_text(unit)
+        q[Field.universe.name] = get_universe(unit)
+        q[Field.note.name] = get_note(unit)
         # Set source to blank for variables without answer categories.
         if q[Field.variable_name.name] in NON_ANSWER_VARS:
             q[Field.source.name] = ''
         else:
-            q[Field.source.name] = get_question_thru_source(
-                unit, Field.source.value, Field.answer_categories.value)
+            q[Field.source.name] = get_source(unit)
         # Insert blank answer category for 'VERDATE' variable.
         if q[Field.variable_name.name] == 'VERDATE':
             insert_blank_answer_categories(unit)
