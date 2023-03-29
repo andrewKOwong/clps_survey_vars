@@ -125,6 +125,9 @@ if __name__ == "__main__":
         with open(DATA_FILE) as f:
             st.download_button("Download JSON", f, DATA_FILE)
 
+    # Set up a placeholder for extra previous next buttons at the top
+    top_buttons = st.container()
+
     # Populate the data fields.
     # Container is unnecessary, but makes the code more readable by indent.
     with st.container():
@@ -202,6 +205,19 @@ if __name__ == "__main__":
 
     # Draw prev/next buttons, unless at beginning or end of list
     if st.session_state.current_var_index > 0:
-        prev = prev_col.button("Previous", on_click=on_prev_button)
+        prev_col.button(
+            "Previous", on_click=on_prev_button, key='prev_bottom')
     if st.session_state.current_var_index < st.session_state.max_var_index:
-        next = next_col.button("Next", on_click=on_next_button)
+        next_col.button(
+            "Next", on_click=on_next_button, key='next_bottom')
+
+    # Also draw prev/next buttons at the top
+    _, mid, _ = top_buttons.columns([1, 1, 1])
+    prev_col, next_col = mid.columns(2)
+    if st.session_state.current_var_index > 0:
+        prev_col.button(
+            "Previous", on_click=on_prev_button, key='prev_top')
+    if st.session_state.current_var_index < st.session_state.max_var_index:
+        next_col.button(
+            "Next", on_click=on_next_button, key='next_top')
+    top_buttons.write("\n")
