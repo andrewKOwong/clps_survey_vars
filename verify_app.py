@@ -14,7 +14,7 @@ INTRO = (
     "(https://www.justice.gc.ca/eng/rp-pr/jr/survey-enquete.html)"
     " is a national survey of Canadians' experiences with the justice system,"
     " most recently conducted by Statisics Canada in 2021."
-    " Data from the survey is provided is provided by Statistics Canada via a"
+    " Data from the survey is provided by Statistics Canada via a"
     " [Public Use Microdata File]"
     "(https://www150.statcan.gc.ca/n1/pub/35-25-0002/352500022022001-eng.htm)."
     " The provided data includes a codebook containing information about"
