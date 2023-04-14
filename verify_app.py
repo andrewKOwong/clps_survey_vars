@@ -22,7 +22,9 @@ INTRO = (
     " This app displays data extracted from the PDF codebook,"
     " allowing browsing or verification of the data."
     " Code for this app and the data extraction script can be found"
-    " [here](https://github.com/andrewKOwong/clps_survey_vars)."
+    " [here](https://github.com/andrewKOwong/clps_survey_vars),"
+    " while a blogpost explaining this app is"
+    " [here](https://mixedconclusions.com/blog/clps_survey_vars/)."
 )
 
 # HTML template for right-aligned text
