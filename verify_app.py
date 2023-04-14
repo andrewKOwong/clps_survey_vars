@@ -21,10 +21,10 @@ INTRO = (
     " survey variables in PDF format that is not readily machine readable."
     " This app displays data extracted from the PDF codebook,"
     " allowing browsing or verification of the data."
-    " Code for this app and the data extraction script can be found"
-    " [here](https://github.com/andrewKOwong/clps_survey_vars),"
-    " while a blogpost explaining this app is"
-    " [here](https://mixedconclusions.com/blog/clps_survey_vars/)."
+    " Please see the "
+    " [GitHub repo](https://github.com/andrewKOwong/clps_survey_vars)"
+    " and an accompanying"
+    " [blogpost](https://mixedconclusions.com/blog/clps_survey_vars/)."
 )
 
 # HTML template for right-aligned text
