@@ -14,7 +14,8 @@ This repo contains scripts to extract data from the codebook PDF.
 It also contains an app to browse the extracted data and verify correct
 extraction.
 
-- TODO a blogpost describing this project is available here.
+A blogpost describing this project is available
+[here](https://mixedconclusions.com/blog/clps_survey_vars/).
 
 
 ## Instructions
