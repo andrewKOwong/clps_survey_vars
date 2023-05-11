@@ -75,6 +75,21 @@ def generate_variable_index(data: list) -> dict:
     return out
 
 
+def generate_format_func(data: list) -> callable:
+    """Returned func maps variable names to variable name plus concept string.
+
+    E.g. {'PUMFID': 'Randomly generated sequence number ...', ...}
+    """
+    lookup = {}
+    for q in data:
+        lookup.update({q[H.variable_name.name]: q[H.concept.name]})
+
+    def out(var_name: str) -> str:
+        return f"{var_name} - {lookup[var_name]}"
+
+    return out
+
+
 def on_select_box():
     """Callback for select box change."""
     st.session_state.current_var_index = \
@@ -117,17 +132,21 @@ if __name__ == "__main__":
     with st.sidebar:
         st.header(TITLE)
         st.write(INTRO)
-        selected_var = st.selectbox(
-            'Choose a variable.',
-            var_index.keys(),
-            on_change=on_select_box,
-            key='select_box'
-            )
         # Download option for the data file
         st.write('\n\n')
         with open(DATA_FILE) as f:
             st.download_button("Download JSON", f, DATA_FILE)
 
+    # Variable selection at the top of the page.
+    selected_var = st.selectbox(
+        'Choose a variable.',
+        var_index.keys(),
+        format_func=generate_format_func(data),
+        on_change=on_select_box,
+        key='select_box'
+        )
+
+    st.write('\n\n')
     # Set up a placeholder for extra previous next buttons at the top
     top_buttons = st.container()
 
