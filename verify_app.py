@@ -13,18 +13,22 @@ INTRO = (
     "The [Canadian Legal Problems Survey (CLPS)]"
     "(https://www.justice.gc.ca/eng/rp-pr/jr/survey-enquete.html)"
     " is a national survey of Canadians' experiences with the justice system,"
-    " most recently conducted by Statisics Canada in 2021."
+    " most recently conducted by Statistics Canada in 2021."
+    "\n\n"
     " Data from the survey is provided by Statistics Canada via a"
     " [Public Use Microdata File]"
     "(https://www150.statcan.gc.ca/n1/pub/35-25-0002/352500022022001-eng.htm)."
     " The provided data includes a codebook containing information about"
     " survey variables in PDF format that is not readily machine readable."
+    "\n\n"
     " This app displays data extracted from the PDF codebook,"
     " allowing browsing or verification of the data."
     " Please see the "
     " [GitHub repo](https://github.com/andrewKOwong/clps_survey_vars)"
     " and an accompanying"
     " [blogpost](https://mixedconclusions.com/blog/clps_survey_vars/)."
+    "\n\n"
+    "Click below to download the data as a JSON file."
 )
 
 # HTML template for right-aligned text
