@@ -36,7 +36,10 @@ START_PAGE = 9  # First data page
 END_PAGE = 126  # Last data page (inclusive)
 
 # These are known characters that the pdf extractor erroneously extracts.
-FAULTY_CHARACTER_MAPPER = {'ﬁ': 'fi'}
+FAULTY_CHARACTER_MAPPER = {
+    'ﬁ': 'fi',
+    "’": "'"
+}
 
 
 # Shim this in between steps of the pipeline during debugging
