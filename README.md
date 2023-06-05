@@ -27,6 +27,7 @@ A blogpost describing this project is available
 - `verify_app.py` --- streamlit app for browsing and verifying the data.
 - `archive` --- previous versions of extracted data and a defunct script for
   extracting the table of contents.
+- `.streamlit/config.toml` --- configuration file for the streamlit app.
 
 
 ### Libraries Required
