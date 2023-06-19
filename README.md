@@ -14,6 +14,10 @@ extraction.
 A blogpost describing this project is available
 [here](https://mixedconclusions.com/blog/clps_survey_vars/).
 
+For a related project on creating a dashboard for the main
+CLPS dataset, see [here](
+  https://github.com/andrewKOwong/clps_data
+).
 
 ## Instructions
 ### Description of Files
