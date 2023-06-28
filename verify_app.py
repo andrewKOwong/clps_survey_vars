@@ -27,7 +27,7 @@ INTRO = (
     " [GitHub repo](https://github.com/andrewKOwong/clps_survey_vars)"
     " and an accompanying"
     " [blogpost](https://mixedconclusions.com/blog/clps_survey_vars/),"
-    " as well a [related dashboard]"
+    " as well as a [related dashboard]"
     "(https://clps-data.streamlit.app/) for the main CLPS dataset."
     "\n\n"
     "Click below to download the data as a JSON file."
